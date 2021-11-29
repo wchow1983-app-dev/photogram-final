@@ -36,30 +36,36 @@
 
 <% else %>
 
-<% current_user_requests = FollowRequest.where({ :status => "accepted", :sender_id => session.fetch(:user_id)  })%>
+<%# current_user_requests = FollowRequest.where({ :status => "pending", :sender_id => session.fetch(:user_id)  })%>
 
-<% the_request = current_user_requests.at(0) %>
+<%# the_request = current_user_requests.at(0) %>
 
-  <% if the_request == nil %>
+  <%# if the_request == nil %>
+  <% if user.private == true  %>
+    
     <td>
       <form action="/insert_follow_request" method="post">
-      <input type="text" name="query_recipient_id" value="<%= user.id %>">
+      <input id="recipent_id" type="text" name="query_recipient_id" value="<%= user.id %>">
       
-      </form>
+      <input id="follow_request_status" type="text" name="query_status" value="pending">
+
       <button>
         Follow
       </button>
+    </form>
     </td>
 
   <% else %>
       <td>
-      <form action="/delete_follow_request/<%= user.username %>" method="post">
-      <input type="text" name="query_recipient_id" value="<%= user.id %>">
+      <form action="/insert_follow_request" method="post">
+      <input id="recipent_id" type="text" name="query_recipient_id" value="<%= user.id %>">
       
-      </form>
+      <input id="follow_request_status" type="text" name="query_status" value="approved">
+
       <button>
-        Unfollow
+        Follow
       </button>
+      </form>
     </td>
   <% end %>
 <% end %>
