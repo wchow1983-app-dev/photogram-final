@@ -1,0 +1,133 @@
+<h1> <%= @users.username %> </h1>
+
+<dl>
+  <dt>Private</dt>
+  <dd><%= @users.private %></dd>
+
+  <dt>Followers</dt>
+  <dd><%= @users.followers.count %></dd>
+
+    <% if @users.id == session.fetch(:user_id) %>
+
+    <% else %>
+        
+    <% current_user_bookmarks = FollowRequest.where({ :recipient_id => @users.id, :sender_id => session.fetch( :user_id) })%>
+    
+    <% follow_status = current_user_bookmarks.at(0) %>
+
+    <% if follow_status == nil %>
+
+        <form action="/edit_user_profile" method="post">
+        <input id="recipent_id" type="hidden" name="query_recipient_id" value="<%= @users.id %>">
+        <input id="follow_request_status" type="hidden" name="query_status" value="accepted">
+
+        <button>
+          Follow
+        </button>
+      </form>
+
+    <% else %>
+
+      <dd><a href="/delete_follow_request/<%= follow_status.id %>">Unfollow</a></dd>
+
+    <% end %>
+   <% end %>
+  
+  <dt>Following</dt>
+  <dd><%= @users.following.count %></dd>
+
+  <% if @users.id == session.fetch(:user_id) %>
+
+  <dt>Edit user</dt>
+    <dd>
+        <form action="/edit_user_profile">
+        <label for="edit_username">Username</label>
+        <input id="edit_username" type="text" name="query_username" value="<%= @users.username %>">
+        
+        <label for="private_option">Private?</label>
+        <input id="private_option" type="checkbox" name="query_private" >
+        
+        <button>
+          Update user
+        </button>
+        </form>
+    </dd>
+  <% else %>
+
+  <% end %>
+
+</dl>
+
+<nav>
+  <ul>
+    <li>
+      <a href="/users/<%= @users.username %>">Profile</a>
+    </li>
+    <li>
+      <a href="/users/<%= @users.username %>/liked_photos">Liked photos</a>
+    </li>
+    <li>
+      <a href="/users/<%= @users.username %>/feed">Feed</a>
+    </li>
+    <li>
+      <a href="/users/<%= @users.username %>/discover">Discover</a>
+    </li>
+  </ul>
+</nav>
+
+<h2>Own photos (<%= @users.own_photos.count%>)</h2>
+
+<table border="1">
+  <tr>
+    <th>
+      Image
+    </th>
+
+    <th>
+      Owner
+    </th>
+
+    <th>
+      Caption
+    </th>
+
+    <th>
+      Posted
+    </th>
+
+    <th>
+      Likes
+    </th>
+
+    <th>
+    </th>
+  </tr>
+
+  <% @users.own_photos.each do |photo| %>
+  <tr>
+    <td>
+      <img src="<%= photo.image %>">
+    </td>
+
+    <td>
+      <%= photo.poster.username %>
+    </td>
+
+    <td>
+      <%= photo.caption %>
+    </td>
+
+    <td>
+      <%= photo.created_at %>
+    </td>
+
+    <td>
+      <%= photo.likes.count %>
+    </td>
+
+    <td>
+      <a href="/photos/<%= photo.id %>">Show details</a>
+    </td>
+  </tr>
+
+  <% end %>
