@@ -9,51 +9,63 @@
 
     <% if @users.id == session.fetch(:user_id) %>
 
+      <dd><h4>Pending follow requests</h4></dd>
+      
+      <% pending_requests = @users.received_follow_requests.where({ :status => "pending" }) %>
+
+      <% pending_requests.each do |request| %>
+       
+        <ul><%= request.sender.username %></ul>
+
+      <% end %>
+
+    <% else %>
+    <% end %>
+    
+    <% if @users.id == session.fetch(:user_id) %>
     <% else %>
         
-    <% current_user_bookmarks = FollowRequest.where({ :recipient_id => @users.id, :sender_id => session.fetch( :user_id) })%>
-    
-    <% follow_status = current_user_bookmarks.at(0) %>
+      <% current_user_bookmarks = FollowRequest.where({ :recipient_id => @users.id, :sender_id => session.fetch( :user_id) })%>
+      <% follow_status = current_user_bookmarks.at(0) %>
 
-    <% if follow_status == nil %>
+      <% if follow_status == nil %>
 
         <form action="/edit_user_profile" method="post">
-        <input id="recipent_id" type="hidden" name="query_recipient_id" value="<%= @users.id %>">
-        <input id="follow_request_status" type="hidden" name="query_status" value="accepted">
+          <input id="recipent_id" type="hidden" name="query_recipient_id" value="<%= @users.id %>">
+          <input id="follow_request_status" type="hidden" name="query_status" value="accepted">
 
-        <button>
-          Follow
-        </button>
-      </form>
+          <button>
+            Follow
+          </button>
+        </form>
 
-    <% else %>
+      <% else %>
 
-      <dd><a href="/delete_follow_request/<%= follow_status.id %>">Unfollow</a></dd>
+        <dd><a href="/delete_follow_request/<%= follow_status.id %>">Unfollow</a></dd>
 
+      <% end %>
     <% end %>
-   <% end %>
   
   <dt>Following</dt>
   <dd><%= @users.following.count %></dd>
 
   <% if @users.id == session.fetch(:user_id) %>
 
-  <dt>Edit user</dt>
-    <dd>
+    <dt>Edit user</dt>
+      <dd>
         <form action="/edit_user_profile">
-        <label for="edit_username">Username</label>
-        <input id="edit_username" type="text" name="query_username" value="<%= @users.username %>">
-        
-        <label for="private_option">Private?</label>
-        <input id="private_option" type="checkbox" name="query_private" >
-        
-        <button>
-          Update user
-        </button>
+          <label for="edit_username">Username</label>
+          <input id="edit_username" type="text" name="query_username" value="<%= @users.username %>">
+            
+          <label for="private_option">Private?</label>
+          <input id="private_option" type="checkbox" name="query_private" >
+            
+          <button>
+            Update user
+          </button>
         </form>
-    </dd>
+      </dd>
   <% else %>
-
   <% end %>
 
 </dl>
@@ -118,7 +130,7 @@
     </td>
 
     <td>
-      <%= photo.created_at %>
+      <%= time_ago_in_words(photo.created_at) %> ago
     </td>
 
     <td>

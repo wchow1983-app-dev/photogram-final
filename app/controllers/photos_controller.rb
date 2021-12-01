@@ -39,7 +39,7 @@ class PhotosController < ApplicationController
 
     the_photo.caption = params.fetch("query_caption")
     the_photo.image = params.fetch("query_image")
-    the_photo.owner_id = params.fetch("query_owner_id")
+    the_photo.owner_id = session.fetch(:user_id)
     the_photo.likes_count = params.fetch("query_likes_count")
     the_photo.comments_count = params.fetch("query_comments_count")
 
