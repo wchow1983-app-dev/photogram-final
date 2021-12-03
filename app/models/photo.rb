@@ -13,6 +13,8 @@
 #
 class Photo < ApplicationRecord
 
+  mount_uploader :image, ImageUploader
+
   belongs_to(:poster, {
     :class_name => "User",
     :foreign_key => "owner_id"
@@ -36,4 +38,6 @@ class Photo < ApplicationRecord
   def fan_list
     return self.fans.pluck(:username).to_sentence
   end
+
+  
 end

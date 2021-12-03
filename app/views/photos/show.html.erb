@@ -14,7 +14,7 @@
 
     <dl>
       <dt>Image</dt>
-      <dd><img src="<%= @the_photo.image %>"></dd>
+      <dd><img src="<%= @the_photo.image %>" class="img-responsive"></dd>
 
       <dt>
         Caption
@@ -84,7 +84,7 @@
         <label for="image_box">
           Image URL
         </label>
-        <input type="file" id="image_box" name="query_image" value="<%= @the_photo.image %>">
+        <input type="file" id="image" name="image" value="<%= @the_photo.image %>" class="form-control">
 
         <label for="caption_box">
           Caption
