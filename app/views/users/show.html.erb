@@ -1,3 +1,9 @@
+  <% if @users.sent_follow_requests.recipient_id.status == nil %>
+  <%= @users.sent_follow_requests.status %>
+    <%# redirect_to("/", { :notice => "You're not authorized for that." }) %>
+
+    <% else %>%
+
 <h1> <%= @users.username %> </h1>
 
 <dl>
@@ -23,6 +29,7 @@
     <% end %>
     
     <% if @users.id == session.fetch(:user_id) %>
+    
     <% else %>
         
       <% current_user_bookmarks = FollowRequest.where({ :recipient_id => @users.id, :sender_id => session.fetch( :user_id) })%>
@@ -142,4 +149,5 @@
     </td>
   </tr>
 
+  <% end %>
   <% end %>

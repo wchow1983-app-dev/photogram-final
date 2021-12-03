@@ -68,11 +68,36 @@
       <dt>
         Add a fan
       </dt>
+
+    <% if session.fetch(:user_id) == nil %>
+
+    <% else %>
+        
+      <% liked_photo = Like.where({ :photo_id => @the_photo.id, :fan_id => session.fetch( :user_id) })%>
+      <% like_status = liked_photo.at(0) %>
+
+      <% if like_status == nil %>
+      
       <dd>  
         <form action="/insert_like"  method="post" >
         <input type="hidden" id="like_photo" name="query_photo_id" value="<%= @the_photo.id %>">
         <button>Like</button>
       </dd>
+
+      <% else %>
+
+      <dt>
+        <dd>
+        <a href="/delete_like/<%= @the_photo.likes.at(0).id %>">
+          Unlike
+        </a>
+        <%= @the_photo.likes.at(0).id %>
+        <dd>
+      </dt>
+
+      <% end %>
+
+    <% end %>
 
       <dt>
         Edit photo
@@ -104,13 +129,13 @@
       <dt>
         Delete photo
       </dt>
-      <dt>
+
         <dd>
         <a href="/delete_photo/<%= @the_photo.id %>">
           Delete this photo
         </a>
         <dd>
-      </dt>
+
 
     </dl>
   </div>
