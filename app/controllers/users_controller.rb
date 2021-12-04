@@ -10,7 +10,18 @@ class UsersController < ApplicationController
     the_username = params.fetch("the_username")
     @users = User.where({ :username => the_username }).at(0)
 
-    render({ :template => "users/show.html.erb" })
+    if session.fetch(:user_id) == nil
+      redirect_to("/", { :alert => "You have to sign in first." })
+    else
+      current_follow_status = FollowRequest.where({ :recipient_id => @users.id, :sender_id => session.fetch( :user_id), :status => "accepted" })
+      follow_status = current_follow_status.at(0) 
+
+      if follow_status == nil && @users.private == true
+        redirect_to("/", { :alert => "You're not authorized for that." })
+      else
+        render({ :template => "users/show.html.erb" })
+      end 
+    end
   end
 
   def feed

@@ -31,11 +31,11 @@
       <% end %>
     </td>
 
-<% if session.fetch(:user_id) == nil %>
+  <% if session.fetch(:user_id) == nil %>
 
-<% elsif  user.private != true %>
- 
-     <td>
+  <% elsif  user.private != true %>
+  
+    <td>
       <form action="/insert_follow_request" method="post">
       <input id="recipent_id" type="hidden" name="query_recipient_id" value="<%= user.id %>">
       <input id="follow_request_status" type="hidden" name="query_status" value="accepted">
@@ -43,12 +43,12 @@
       <button>
         Follow
       </button>
-    </form>
+      </form>
     </td>
 
-<% elsif  user.private == true %>
+  <% elsif  user.private == true %>
 
-     <td>
+    <td>
       <form action="/insert_follow_request" method="post">
       <input id="recipent_id" type="hidden" name="query_recipient_id" value="<%= user.id %>">
       <input id="follow_request_status" type="hidden" name="query_status" value="pending">
@@ -56,11 +56,9 @@
       <button>
         Follow
       </button>
-    </form>
+      </form>
     </td>
-
-<% end %>
-
+  <% end %>
 
     <td>
       <a href="/users/<%= user.username %>">Show details</a>
@@ -69,5 +67,3 @@
   </tr>
   <% end %>
 </table>
-
-
