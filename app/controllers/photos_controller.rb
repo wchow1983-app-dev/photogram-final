@@ -3,12 +3,14 @@ class PhotosController < ApplicationController
     matching_photos = Photo.all
 
     @list_of_photos = matching_photos.order({ :created_at => :desc })
+    
+    render({ :template => "photos/index.html.erb" })
 
-    if session.fetch(:user_id) == nil
-      redirect_to("/", { :alert => "You have to sign in first." })
-    else
-      render({ :template => "photos/index.html.erb" })
-    end
+    #if session.fetch(:user_id) == nil
+     #redirect_to("/", { :alert => "You have to sign in first." })
+    #else
+      #render({ :template => "photos/index.html.erb" })
+    #end
   end
 
   def show
@@ -17,8 +19,11 @@ class PhotosController < ApplicationController
     matching_photos = Photo.where({ :id => the_id })
 
     @the_photo = matching_photos.at(0)
-
+    if session.fetch(:user_id) == nil
+      redirect_to("/", { :alert => "You have to sign in first." })
+    else
     render({ :template => "photos/show.html.erb" })
+    end
   end
 
   def create
